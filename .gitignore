@@ -1,0 +1,68 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+wheels/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# Virtual environments
+.env/
+.venv/
+env/
+venv/
+Venv/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# MacOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+
+# Logs
+*.log
+
+# Python test coverage
+.coverage
+.coverage.*
+*.hypothesis/
+.nosetests.xml
+coverage.xml
+*.cover
+
+# Pytest
+.cache/
+
+# mypy
+.mypy_cache/
+
+# Flask-related
+instance/
+.webassets-cache/
+
+# dotenv files
+.env
+.env.*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Python Wheel
+*.whl

@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Simple API
+  description: A simple API for GET and POST requests
+  version: "1.0.0"
+
+paths:
+  /get:
+    get:
+      operationId: Api.Routes.Routes.GetData
+      summary: A simple GET endpoint
+      responses:
+        '200':
+          description: A successful GET request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "This is a GET request!"
+  /post:
+    post:
+      operationId: Api.Routes.Routes.EchoPost
+      summary: A simple POST endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Doe"
+                age:
+                  type: integer
+                  example: 30
+      responses:
+        '201':
+          description: Data successfully posted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    type: object
