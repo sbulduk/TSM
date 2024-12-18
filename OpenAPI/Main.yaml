@@ -7,7 +7,7 @@ info:
 paths:
   /get:
     get:
-      operationId: Api.Routes.Routes.GetData
+      operationId: API.Routes.Routes.GetData
       summary: A simple GET endpoint
       responses:
         '200':
@@ -22,7 +22,7 @@ paths:
                     example: "This is a GET request!"
   /post:
     post:
-      operationId: Api.Routes.Routes.EchoPost
+      operationId: API.Routes.Routes.EchoPost
       summary: A simple POST endpoint
       requestBody:
         required: true

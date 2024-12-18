@@ -1,0 +1,7 @@
+[database]
+type="postgresql"
+host="192.168.174.128"
+port=5432
+username="admin"
+password="Sbulduk2023!"
+database="TSMDB"
