@@ -1,8 +1,11 @@
 openapi: 3.0.0
 info:
-  title: Simple API
-  description: A simple API for GET and POST requests
-  version: "1.0.0"
+  title: Simple API for endpoint tests.
+  description: The simplest API for GET and POST operations.
+  version: "1.0.0.13"
+
+servers:
+  - url: /main
 
 paths:
   /get:
@@ -10,7 +13,7 @@ paths:
       operationId: API.Routes.Routes.GetData
       summary: A simple GET endpoint
       responses:
-        '200':
+        "200":
           description: A successful GET request
           content:
             application/json:
@@ -38,7 +41,7 @@ paths:
                   type: integer
                   example: 30
       responses:
-        '201':
+        "201":
           description: Data successfully posted
           content:
             application/json:

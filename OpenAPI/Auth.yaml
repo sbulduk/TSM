@@ -1,12 +1,18 @@
 openapi: 3.0.0
 info:
-  title: Authentication Service
-  description: APIs for user authentication and role management
+  title: Authentication API
+  description: API for user authentication and token validation
   version: "1.0.0"
+
+servers:
+  - url: /auth
+
 paths:
-  /auth/login:
+  /login:
     post:
-      summary: Login a user and get a JWT token
+      operationId: API.Routes.AuthRoutes.Login
+      summary: Login endpoint
+      description: Authenticate the user and return a token
       requestBody:
         required: true
         content:
@@ -16,33 +22,20 @@ paths:
               properties:
                 username:
                   type: string
-                  example: "john_doe"
+                  example: "admin"
                 password:
                   type: string
                   example: "password123"
       responses:
         "200":
-          description: Successfully authenticated
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR..."
         "401":
           description: Invalid credentials
-  /auth/decode:
-    post:
-      summary: Decode a JWT token
-      responses:
-        "200":
-          description: Successfully decoded
-        "401":
-          description: Invalid or expired token
-  /auth/check-role/{role_name}:
-    get:
-      summary: Check if a user has a specific role
-      parameters:
-        - in: query
-          name: user_id
-          required: true
-          schema:
-            type: string
-          description: The ID of the user
-      responses:
-        "200":
-          description: Role check result

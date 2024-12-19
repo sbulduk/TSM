@@ -11,7 +11,7 @@ def GetAuthService():
     finally:
         db.close()
 
-@AuthBlueprint.route("/login",methods=["GET"])
+@AuthBlueprint.route("/login",methods=["POST"])
 def Login():
     data=request.json
     userName=data.get("userName")
