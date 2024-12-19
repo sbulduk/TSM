@@ -1,3 +1,7 @@
-[security]
-token_expiration_minutes=30
-password_hashing_algorithm="argon2"
+[Security]
+PasswordHashingAlgorithm="argon2"
+
+[JWT]
+SecretKey="Sbulduk2023!"
+Algorithm="HS256"
+TokenExpiration=60

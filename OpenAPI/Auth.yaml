@@ -1,0 +1,48 @@
+openapi: 3.0.0
+info:
+  title: Authentication Service
+  description: APIs for user authentication and role management
+  version: "1.0.0"
+paths:
+  /auth/login:
+    post:
+      summary: Login a user and get a JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "john_doe"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: Successfully authenticated
+        "401":
+          description: Invalid credentials
+  /auth/decode:
+    post:
+      summary: Decode a JWT token
+      responses:
+        "200":
+          description: Successfully decoded
+        "401":
+          description: Invalid or expired token
+  /auth/check-role/{role_name}:
+    get:
+      summary: Check if a user has a specific role
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the user
+      responses:
+        "200":
+          description: Role check result
