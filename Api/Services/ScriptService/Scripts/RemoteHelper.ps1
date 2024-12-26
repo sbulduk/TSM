@@ -7,10 +7,15 @@ class RemoteHelper{
         $this.credential=$credential
     }
 
-    RemoteHelper([string]$remoteServer,[string]$userName,[string]$password){
+    RemoteHelper([string]$remoteServer,[string]$userName,[System.Security.SecureString]$password){
         $this.remoteServer=$remoteServer
-        $this.credential=New-Object System.Management.Automation.PSCredential($userName,(ConvertTo-SecureString -String($password) -AsPlainText -Force))
+        $this.credential=New-Object System.Management.Automation.PSCredential($userName,$password)
     }
+
+    # RemoteHelper([string]$remoteServer,[string]$userName,[string]$password){
+    #     $this.remoteServer=$remoteServer
+    #     $this.credential=New-Object System.Management.Automation.PSCredential($userName,(ConvertTo-SecureString -String($password) -AsPlainText -Force))
+    # }
 
     [bool] TestConnection(){
         try{
