@@ -1,8 +1,10 @@
 from flask import Blueprint,jsonify,request
+from Middleware.Authorization import Authorization
 from API.Services.AuthService import AuthService
 from Models import SessionLocal
 
 AuthBlueprint=Blueprint("AuthBlueprint",__name__,url_prefix="/auth")
+authorization=Authorization()
 
 def GetAuthService():
     db=SessionLocal()
@@ -40,3 +42,13 @@ def CheckUserRole(roleName:str):
     authService=next(GetAuthService())
     hasRole=authService.CheckUserRole(userId,roleName)
     return jsonify({"success":True,"data":f"{hasRole}"}),200
+
+@AuthBlueprint.route("/admin-only",methods=["GET"])
+@authorization.Authorize(["Admin"])
+def AdminOnly():
+    return jsonify({"success":True,"data":f"Welcome, admin!"}),200
+
+@AuthBlueprint.route("/user-access",methods=["GET"])
+@authorization.Authorize(["User","Admin"])
+def UserAccess():
+    return jsonify({"success":True,"data":f"Welcome, any user!"}),200

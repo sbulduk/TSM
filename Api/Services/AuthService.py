@@ -48,6 +48,18 @@ class AuthService(object):
         else:
             logger.info("Login failed",userName=userName)
             return None
+        
+    def Authorize(self,token:str,requiredRoles:list[str])->bool:
+        payload=self.DecodeJWT(token)
+        userRoles=payload.get("roles",[])
+        authorized=any(role in requiredRoles for role in userRoles)
+        logger.info(
+            "Authorization check",
+            token=token,
+            requiredRoles=requiredRoles,
+            authorized=authorized
+        )
+        return authorized
 
     def CheckUserRole(self,userId:str,roleName:str)->bool:
         hasRole=False
