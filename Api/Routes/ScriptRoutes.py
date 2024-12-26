@@ -4,8 +4,8 @@ from API.Services.ScriptService.ScriptService import ScriptService
 ScriptBlueprint=Blueprint("ScriptBlueprint",__name__,url_prefix="/script")
 scriptService=ScriptService("192.168.2.2","sbulduk","Sbulduk2024!")
 
-@ScriptBlueprint.route("/executepowershell",methods=["GET"])
-def ExecutePowershell():
+@ScriptBlueprint.route("/executescript",methods=["GET"])
+def ExecuteScript():
     scriptContent="Get-Process | Select-Object -First 5"
     try:
         result=scriptService.ExecutePowershell(scriptContent)
@@ -15,3 +15,7 @@ def ExecutePowershell():
         return jsonify({"success":True,"data":f"{result}"}),200
     except Exception as e:
         return({"success":False,"data":f"Check user credentials."})
+    
+@ScriptBlueprint.route("/invokeclassmethod",methods=["POST"])
+def InvokeClassMethod():
+    

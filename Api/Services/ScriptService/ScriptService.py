@@ -3,6 +3,8 @@ import winrm
 class ScriptService(object):
     def __init__(self,host:str,userName:str,password:str)->None:
         self.host=host
+        self.userName=userName
+        self.password=password
         self.session=winrm.Session(
             f"http://{host}:5985/wsman",
             auth=(userName,password),
@@ -18,24 +20,37 @@ class ScriptService(object):
             "stderr":response.std_err.decode("latin-1").strip(),
             "status_code":response.status_code
         }
-    
+
+    def CreateSecureString(self,plainText:str)->str:
+        secureStringScript=f"""
+            $secureString=ConvertTo-SecureString '{plainText}' -AsPlainText -Force
+            $secureString
+        """
+        result=self.session.run_ps(secureStringScript)
+        if result.status_code==0:
+            return result.std_out.strip()
+        else:
+            raise Exception(f"Error creating SecureString: {result.std_err.strip()}")
+
     def InvokeClassMethod(self,className:str,methodName:str,params:dict=None)->dict:
+        securePassword=self.CreateSecureString(self.password)
         paramsStr=";".join([f"$params.add('{key}','{value}')" for key,value in (params or {}).items()])
         script=f"""
             $params=@{{}}
             {paramsStr}
-            $remoteHelper=[RemoteHelper]::new("{self.host}","{self.session.auth[0]}","{self.session.auth[1]}")
+            $remoteHelper=[RemoteHelper]::new("{self.host}","{self.userName}","{securePassword}")
             $result=$remoteHelper.RunMethod("{className}","{methodName}",$params)
             $result
         """
         return self.ExecuteScript(script)
     
     def RunScriptFile(self,filePath:str,params:dict=None)->dict:
+        securePassword=self.CreateSecureString(self.password)
         paramsStr=";".join([f"$params.Add('{key}','{value}')" for key,value in (params or {}).items()])
         script=f"""
             $params=@{{}}
             {paramsStr}
-            $remoteHelper=[RemoteHelper]::new("{self.host}","{self.session.auth[0]}","{self.session.auth[1]}")
+            $remoteHelper=[RemoteHelper]::new("{self.host}","{self.userName}","{securePassword}")
             $result=$remoteHelper.RunScriptFile("{filePath}",$params)
             $result
         """
