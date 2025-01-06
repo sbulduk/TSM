@@ -25,7 +25,10 @@ def Register():
     
     authService=next(GetAuthService())
     userId=authService.Register(userName,email,password)
-    return jsonify({"success":True,"data":f"User added: {userId}"})
+    return jsonify({"success":True,"data":{
+        "message":f"User added successfully",
+        "userId":userId
+    }})
 
 @AuthBlueprint.route("/login",methods=["POST"])
 def Login():
@@ -48,7 +51,7 @@ def DecodeToken():
     payload=authService.DecodeJWT(token)
     return jsonify({"success":True,"data":f"{payload}"}),200
 
-@AuthBlueprint.route("/checkuserrole/<string:roleName>")
+@AuthBlueprint.route("/checkuserrole/<string:roleName>",methods=["POST"])
 def CheckUserRole(roleName:str):
     userId=request.args.get("userId")
     if not userId:

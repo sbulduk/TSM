@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Role API
+  description: API for managing roles
+  version: "1.0.0"
+
+servers:
+  - url: /role
+
+paths:
+  /getrole/{roleId}:
+    get:
+      operationId: API.Routes.RoleRoutes.GetRole
+      summary: Get role by ID
+      description: Retrieve role details by role ID
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "12345"
+      responses:
+        "201":
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roleName:
+                    type: string
+                    example: "Admin"
+                  description:
+                    type: string
+                    example: "Administrator role"
+
+  /listroles:
+    get:
+      operationId: API.Routes.RoleRoutes.ListRoles
+      summary: List all roles
+      description: Retrieve a list of all roles
+      responses:
+        "200":
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                      example: "Admin"
+
+  /addrole:
+    post:
+      operationId: API.Routes.RoleRoutes.AddRole
+      summary: Add a new role
+      description: Add a new role to the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roleName:
+                  type: string
+                  example: "User"
+                description:
+                  type: string
+                  example: "Regular user role"
+      responses:
+        "201":
+          description: Successful addition
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Role added successfully"
+                  roleId:
+                    type: string
+                    example: "67890"
+        "400":
+          description: Missing role name
+
+  /updaterole/{roleId}:
+    put:
+      operationId: API.Routes.RoleRoutes.UpdateRole
+      summary: Update role by ID
+      description: Update the details of an existing role by role ID
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "12345"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roleName:
+                  type: string
+                  example: "Admin"
+                description:
+                  type: string
+                  example: "Administrator role"
+      responses:
+        "200":
+          description: Successful update
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Role updated"
+                  roleId:
+                    type: string
+                    example: "12345"
+        "500":
+          description: Role ID not found
+
+  /deleterole/{roleId}:
+    delete:
+      operationId: API.Routes.RoleRoutes.DeleteRole
+      summary: Delete role by ID
+      description: Delete an existing role by role ID
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "12345"
+      responses:
+        "200":
+          description: Successful deletion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Role deleted"
+                  roleId:
+                    type: string
+                    example: "12345"
+        "400":
+          description: Role not found or error occurred

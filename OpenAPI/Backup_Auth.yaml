@@ -1,0 +1,129 @@
+# openapi: 3.0.0
+# info:
+#   title: Authentication API
+#   description: API for user authentication and token validation
+#   version: "1.0.0"
+
+# servers:
+#   - url: /auth
+
+# paths:
+#   /login:
+#     post:
+#       operationId: API.Routes.AuthRoutes.Login
+#       summary: Login endpoint
+#       description: Authenticate the user and return a token
+#       requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 username:
+#                   type: string
+#                   example: "admin"
+#                 password:
+#                   type: string
+#                   example: "password123"
+#       responses:
+#         "200":
+#           description: Successful login
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   token:
+#                     type: string
+#                     example: "eyJhbGciOiJIUzI1NiIsInR..."
+#         "401":
+#           description: Invalid credentials
+
+
+openapi: 3.0.0
+info:
+  title: Auth API
+  version: 1.0.0
+paths:
+  /auth/login:
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Successful login
+        "400":
+          description: Bad request
+  /auth/decode:
+    post:
+      summary: Decode Token
+      responses:
+        "200":
+          description: Successful token decoding
+        "400":
+          description: Bad request
+  /auth/checkuserrole/{roleName}:
+    get:
+      summary: Check User Role
+      parameters:
+        - name: roleName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful role check
+        "400":
+          description: Bad request
+  /auth/admin-only:
+    get:
+      summary: Admin Only
+      responses:
+        "200":
+          description: Welcome admin
+  /auth/user-access:
+    get:
+      summary: User Access
+      responses:
+        "200":
+          description: Welcome user
+  /auth/register:
+    post:
+      summary: Register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: User registered successfully
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error

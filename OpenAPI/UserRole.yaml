@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: User Role API
+  description: API for managing user roles
+  version: "1.0.0"
+
+servers:
+  - url: /userrole
+
+paths:
+  /adduserrole:
+    post:
+      operationId: API.Routes.UserRoleRoutes.AddUserRole
+      summary: Add a user role
+      description: Assign a role to a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: "12345"
+                roleId:
+                  type: string
+                  example: "67890"
+      responses:
+        "201":
+          description: Successful addition
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User-Role added successfully"
+                  userId:
+                    type: string
+                    example: "12345"
+                  roleId:
+                    type: string
+                    example: "67890"
+        "400":
+          description: Missing user ID or role ID
+
+  /deleteuserrole:
+    delete:
+      operationId: API.Routes.UserRoleRoutes.DeleteUserRole
+      summary: Delete a user role
+      description: Remove a role from a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: "12345"
+                roleId:
+                  type: string
+                  example: "67890"
+      responses:
+        "200":
+          description: Successful deletion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User-Role deleted successfully"
+                  userId:
+                    type: string
+                    example: "12345"
+                  roleId:
+                    type: string
+                    example: "67890"
+        "400":
+          description: Missing user ID or role ID
+        "500":
+          description: Error in deletion
+
+  /roles/{userId}:
+    get:
+      operationId: API.Routes.UserRoleRoutes.GetRolesofUser
+      summary: Get roles of a user
+      description: Retrieve all roles assigned to a user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "12345"
+      responses:
+        "200":
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userName:
+                    type: string
+                    example: "john_doe"
+                  email:
+                    type: string
+                    example: "john_doe@example.com"
+                  roleList:
+                    type: array
+                    items:
+                      type: string
+                      example: "Admin"
+        "500":
+          description: User ID not found or error occurred
+
+  /users/{roleId}:
+    get:
+      operationId: API.Routes.UserRoleRoutes.GetUsersofRole
+      summary: Get users of a role
+      description: Retrieve all users assigned to a role
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "67890"
+      responses:
+        "200":
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roleName:
+                    type: string
+                    example: "Admin"
+                  userList:
+                    type: array
+                    items:
+                      type: string
+                      example: "john_doe"
+        "500":
+          description: Role ID not found or error occurred

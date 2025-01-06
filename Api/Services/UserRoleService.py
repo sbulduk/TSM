@@ -12,9 +12,15 @@ class UserRoleService(object):
     def __init__(self,dbSession:Session):
         self.dbSession=dbSession
     
-    def GetUserRoles(self,userId:str)->list:
+    def GetRolesofUser(self,userId:str)->list:
         userRoles=self.dbSession.query(UserRole).filter(UserRole.UserId==userId).all()
-        roles=[self.dbSession.query()]
+        roles=[self.dbSession.query(Role).filter(Role.Id==userRole.RoleId).first() for userRole in userRoles]
+        return [{"Id":role.Id,"Name":role.Name,"Description":role.Description} for role in roles]
+    
+    def GetUsersofRole(self,roleId:str)->list:
+        userRoles=self.dbSession.query(UserRole).filter(UserRole.RoleId==roleId).all()
+        users=[self.dbSession.query(User).filter(User.Id==userRole.UserId).first() for userRole in userRoles]
+        return [{"Id":user.Id,"Name":user.UserName,"Email":user.Email} for user in users]
 
     def AddUserRole(self,userId:str,roleId:str)->bool:
         authService=AuthService(self.dbSession)

@@ -39,3 +39,144 @@ paths:
                     example: "eyJhbGciOiJIUzI1NiIsInR..."
         "401":
           description: Invalid credentials
+
+  /register:
+    post:
+      operationId: API.Routes.AuthRoutes.Register
+      summary: Register endpoint
+      description: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  example: "newuser"
+                email:
+                  type: string
+                  example: "newuser@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User added successfully"
+                  userId:
+                    type: string
+                    example: "12345"
+        "400":
+          description: Missing required fields
+
+  /decode:
+    post:
+      operationId: API.Routes.AuthRoutes.DecodeToken
+      summary: Decode token endpoint
+      description: Decode the provided JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: "Bearer eyJhbGciOiJIUzI1NiIsInR..."
+      responses:
+        "200":
+          description: Successful token decoding
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: string
+                    example: "{'userId': '12345', 'role': 'User'}"
+        "400":
+          description: Missing token
+
+  /checkuserrole/{roleName}:
+    post:
+      operationId: API.Routes.AuthRoutes.CheckUserRole
+      summary: Check user role endpoint
+      description: Check if the user has the specified role
+      parameters:
+        - name: roleName
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "Admin"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: "12345"
+      responses:
+        "200":
+          description: Successful role check
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hasRole:
+                    type: boolean
+                    example: true
+        "400":
+          description: Missing user ID
+
+  /admin-only:
+    get:
+      operationId: API.Routes.AuthRoutes.AdminOnly
+      summary: Admin only endpoint
+      description: Access restricted to admin users
+      responses:
+        "200":
+          description: Successful access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Welcome, admin!"
+        "403":
+          description: Forbidden access
+
+  /user-access:
+    get:
+      operationId: API.Routes.AuthRoutes.UserAccess
+      summary: User access endpoint
+      description: Access restricted to users and admins
+      responses:
+        "200":
+          description: Successful access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Welcome, any user!"
+        "403":
+          description: Forbidden access

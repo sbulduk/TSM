@@ -1,0 +1,101 @@
+openapi: 3.0.0
+info:
+  title: Script API
+  description: API for executing scripts
+  version: "1.0.0"
+
+servers:
+  - url: /script
+
+paths:
+  /executescript:
+    get:
+      operationId: API.Routes.ScriptRoutes.ExecuteScript
+      summary: Execute a script
+      description: Execute a predefined script
+      responses:
+        "200":
+          description: Successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stdout:
+                    type: string
+                    example: "Standard Output"
+                  stderr:
+                    type: string
+                    example: "Standard Error"
+                  status_code:
+                    type: integer
+                    example: 0
+        "400":
+          description: Error in execution
+
+  /invokeclassmethod:
+    post:
+      operationId: API.Routes.ScriptRoutes.InvokeClassMethod
+      summary: Invoke a class method
+      description: Invoke a method of a specified class
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                className:
+                  type: string
+                  example: "ComputerHelper"
+                methodName:
+                  type: string
+                  example: "CheckComputerExists"
+                params:
+                  type: object
+                  example: {"computerName": "AS-TASKIN162"}
+      responses:
+        "200":
+          description: Successful invocation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Method result"
+        "400":
+          description: Error in invocation
+
+  /runscriptfile:
+    post:
+      operationId: API.Routes.ScriptRoutes.RunScriptFile
+      summary: Run a script file
+      description: Execute a script file with parameters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filePath:
+                  type: string
+                  example: "..\\Services\\ScriptService\\Scripts\\ComputerHelper.ps1"
+                params:
+                  type: object
+                  example: {"OUPath": "OU=Computers,DC=blahblah,DC=comblah"}
+      responses:
+        "200":
+          description: Successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Script result"
+        "400":
+          description: Error in execution
