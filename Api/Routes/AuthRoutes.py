@@ -13,6 +13,20 @@ def GetAuthService():
     finally:
         db.close()
 
+@AuthBlueprint.route("/register",methods=["POST"])
+def Register():
+    data=request.json
+    userName=data.get("userName")
+    email=data.get("email")
+    password=data.get("password")
+
+    if not userName or not email or not password:
+        return jsonify({"success":False,"data":f"Username, email and password are required"}),400
+    
+    authService=next(GetAuthService())
+    userId=authService.Register(userName,email,password)
+    return jsonify({"success":True,"data":f"User added: {userId}"})
+
 @AuthBlueprint.route("/login",methods=["POST"])
 def Login():
     data=request.json

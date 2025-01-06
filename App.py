@@ -14,7 +14,7 @@ class App(object):
         # self.connexionApp.add_api("Main.yaml")
 
     def Run(self)->None:
-        uvicorn.run(self.connexionApp,host="127.0.0.1",port=8080)
+        uvicorn.run(self.connexionApp,host="127.0.0.1",port=8888)
 
 if __name__=="__main__":
     app=App()

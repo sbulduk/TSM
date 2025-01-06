@@ -5,6 +5,7 @@ from argon2 import PasswordHasher
 from Models.User import User
 from datetime import datetime,timezone,timedelta
 from authlib.jose import jwt
+import uuid
 
 logger=get_logger()
 config=Config.settings
@@ -39,6 +40,23 @@ class AuthService(object):
         payload.validate()
         logger.debug("JWT decoded successfully",token=token)
         return payload
+    
+    def GetUserbyId(self,userId:str)->User:
+        user=self.dbSession.query(User).filter(User.Id==userId).first()
+        if not user:
+            return None
+        return user
+    
+    def Register(self,userName:str,email:str,password:str)->list[str]:
+        user=User(Id=str(uuid.uuid4()),UserName=userName,Email=email)
+        user.SetPassword(password)
+        self.dbSession.add(user)
+        self.dbSession.commit()
+        logger.info("User registered",userId=user.Id)
+        token=self.Login(userName,password)
+        if token:
+            return user.Id,token
+        return None
 
     def Login(self,userName:str,password:str)->str:
         user=self.dbSession.query(User).filter(User.UserName==userName).first()

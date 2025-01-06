@@ -8,7 +8,7 @@ scriptService=ScriptService("192.168.2.2","sbulduk","Sbulduk2024!")
 def ExecuteScript():
     scriptContent="Get-Process | Select-Object -First 5"
     try:
-        result=scriptService.ExecutePowershell(scriptContent)
+        result=scriptService.ExecuteScript(scriptContent)
         print("Standard Output:",result["stdout"])
         print("Standard Error:",result["stderr"])
         print("Exit Code:",result["status_code"])

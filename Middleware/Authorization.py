@@ -8,7 +8,7 @@ class Authorization(object):
         self.db=SessionLocal
     
     def __del__(self):
-        self.db.close()
+        self.db.close_all()
 
     def Authorize(self,requiredRoles:list[str])->any:
         def Decorator(f):
