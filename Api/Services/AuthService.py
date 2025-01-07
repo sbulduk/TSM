@@ -15,9 +15,13 @@ class AuthService(object):
         self.dbSession=dbSession
         self.ph=PasswordHasher()
 
-        self.secretKey=config["JWT"]["SecretKey"]
-        self.algorithm=config["JWT"]["Algorithm"]
-        self.tokenExpiration=config["JWT"]["TokenExpiration"]
+        self.secretKey=config.get("JWT.SecretKey")
+        self.algorithm=config.get("JWT.Algorithm")
+        self.tokenExpiration=config.get("JWT.TokenExpiration")
+
+        # self.secretKey=config["JWT"]["SecretKey"]
+        # self.algorithm=config["JWT"]["Algorithm"]
+        # self.tokenExpiration=config["JWT"]["TokenExpiration"]
 
         # self.secretKey=config.JWT.SecretKey
         # self.algorithm=config.JWT.Algorithm

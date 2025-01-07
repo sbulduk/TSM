@@ -22,10 +22,10 @@ paths:
               properties:
                 username:
                   type: string
-                  example: "admin"
+                  example: "user-name"
                 password:
                   type: string
-                  example: "password123"
+                  example: "p+55w0rD"
       responses:
         "200":
           description: Successful login
@@ -57,10 +57,10 @@ paths:
                   example: "newuser"
                 email:
                   type: string
-                  example: "newuser@example.com"
+                  example: "newuseremail@example.com"
                 password:
                   type: string
-                  example: "password123"
+                  example: "p+55w0rD"
       responses:
         "200":
           description: Successful registration
@@ -74,7 +74,7 @@ paths:
                     example: "User added successfully"
                   userId:
                     type: string
-                    example: "12345"
+                    example: "246fa0d7-8c96-496d-b27b-236118336f2c"
         "400":
           description: Missing required fields
 
@@ -103,7 +103,7 @@ paths:
                 properties:
                   payload:
                     type: string
-                    example: "{'userId': '12345', 'role': 'User'}"
+                    example: "{'userId': '246fa0d7-8c96-496d-b27b-236118336f2c', 'role': 'User'}"
         "400":
           description: Missing token
 
@@ -128,7 +128,7 @@ paths:
               properties:
                 userId:
                   type: string
-                  example: "12345"
+                  example: "246fa0d7-8c96-496d-b27b-236118336f2c"
       responses:
         "200":
           description: Successful role check
@@ -141,7 +141,7 @@ paths:
                     type: boolean
                     example: true
         "400":
-          description: Missing user ID
+          description: Missing User ID
 
   /admin-only:
     get:
