@@ -1,4 +1,5 @@
 import winrm
+import os
 
 class ScriptService(object):
     def __init__(self,host:str,userName:str,password:str)->None:
@@ -10,6 +11,7 @@ class ScriptService(object):
             auth=(userName,password),
             transport="ntlm"
         )
+        self.initialDirectory=os.path.dirname(os.path.abspath(__file__))
 
     def ExecuteScript(self,script:str,params:dict=None)->dict:
         paramsStr=" ".join([f"-{key} {value}" for key,value in (params or {}).items()])
@@ -35,7 +37,11 @@ class ScriptService(object):
     def InvokeClassMethod(self,className:str,methodName:str,params:dict=None)->dict:
         securePassword=self.CreateSecureString(self.password)
         paramsStr=";".join([f"$params.add('{key}','{value}')" for key,value in (params or {}).items()])
+        remoteHelperPath=os.path.join(self.initialDirectory,"Scripts","RemoteHelper.ps1")
+        print(f"{self.initialDirectory}")
+        print(f"{remoteHelperPath}")
         script=f"""
+            .\"{remoteHelperPath}"
             $params=@{{}}
             {paramsStr}
             $remoteHelper=[RemoteHelper]::new("{self.host}","{self.userName}","{securePassword}")
@@ -43,7 +49,7 @@ class ScriptService(object):
             $result
         """
         result=self.ExecuteScript(script)
-        print(f"{result}")
+        print(f"Script output: {result}")
         return result
     
     def RunScriptFile(self,filePath:str,params:dict=None)->dict:

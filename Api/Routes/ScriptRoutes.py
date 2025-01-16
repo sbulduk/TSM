@@ -19,11 +19,15 @@ def ExecuteScript():
 @ScriptBlueprint.route("/invokeclassmethod",methods=["POST"])
 def InvokeClassMethod():
     try:
-        # TODO: Turn this static parameters into dynamic, to be read from json file!!!
+        data=request.json
+        className=data.get("className")
+        methodName=data.get("methodname")
+        params=data.get("params",{})
+
         script=scriptService.InvokeClassMethod(
-            className="ComputerHelper",
-            methodName="CheckComputerExists",
-            params={"computerName":"AS-TASKIN72"}
+            className=className,
+            methodName=methodName,
+            params=params
         )
         return jsonify({"success":True,"data":f"{script}"}),200
     except Exception as e:
