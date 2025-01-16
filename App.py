@@ -1,8 +1,11 @@
+from dotenv import load_dotenv
 import connexion
 from flask_cors import CORS
 from Middleware.Blueprint import Blueprint
 from Middleware.APIDoc import APIDoc
 import uvicorn
+
+load_dotenv(override=True)
 
 class App(object):
     def __init__(self)->None:

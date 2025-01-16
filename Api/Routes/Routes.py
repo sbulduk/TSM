@@ -14,7 +14,6 @@ def EchoPost():
 @MainBlueprint.route("/test",methods=["GET"])
 def ShowConfig():
     from Middleware.Config import Config
-    # re=Config.settings.to_dict()
-    res=Config.settings("JWT")
-    print(f"{res}")
-    return jsonify({"asdf":res})
+    res=Config.settings
+    print(f"{res.Database.Type}")
+    return jsonify({"asdf":res.Database.Type})
