@@ -42,7 +42,9 @@ class ScriptService(object):
             $result=$remoteHelper.RunMethod("{className}","{methodName}",$params)
             $result
         """
-        return self.ExecuteScript(script)
+        result=self.ExecuteScript(script)
+        print(f"{result}")
+        return result
     
     def RunScriptFile(self,filePath:str,params:dict=None)->dict:
         securePassword=self.CreateSecureString(self.password)

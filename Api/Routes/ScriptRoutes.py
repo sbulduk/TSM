@@ -23,7 +23,7 @@ def InvokeClassMethod():
         script=scriptService.InvokeClassMethod(
             className="ComputerHelper",
             methodName="CheckComputerExists",
-            params={"computerName":"AS-TASKIN162"}
+            params={"computerName":"AS-TASKIN72"}
         )
         return jsonify({"success":True,"data":f"{script}"}),200
     except Exception as e:
