@@ -3,6 +3,35 @@
 ## 1. SERVER SIDE PROCESS ORDER
 **Notice:** These steps have been tried on Windows Server 2019 and Windows Server 2022 operating systems.
 **Notice:** Be sure that PowerShell has been run as administrator before following the instructions below.
+**Notice:** Do the following command in the PowerShell terminal while importing of a .ps1 file in a PowerShell Script file (. .\RemoteHelper.ps1)
+
+
+Option 1: Temporarily change the execution policy for the current session
+Run the following command before executing the script to allow scripts to run in your current PowerShell session:
+```sh
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+```
+This will allow locally stored scripts to run, while still blocking scripts downloaded from the internet unless they are signed.
+After running this, you can try executing . .\RemoteHelper.ps1 again.
+
+---
+Option 2: Change the execution policy for all users (permanent solution)
+If you want to make this change permanent, you can use:
+```sh
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+```
+This command will set the execution policy for all PowerShell sessions on your system to allow locally stored scripts and signed remote scripts to run.
+
+---
+Option 3: Change the execution policy for the current user (for the user only)
+To modify the execution policy for just your user account (without affecting other users), use:
+```sh
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+After changing the execution policy, you should be able to load the RemoteHelper.ps1 script by running:
+```sh
+. .\RemoteHelper.ps1
+```
 ### 1.1 Enable Remote Management on Windows Server (2019/2022)
 Remote management is crucial for executing commands and scripts from the Windows client (Windows 10/11).
 **Steps:**

@@ -3,7 +3,8 @@ from API.Routes.Routes import MainBlueprint
 from API.Routes.AuthRoutes import AuthBlueprint
 from API.Routes.RoleRoutes import RoleBlueprint
 from API.Routes.UserRoleRoutes import UserRoleBlueprint
-from API.Routes.ScriptRoutes import ScriptBlueprint
+# from API.Routes.ScriptRoutes import ScriptBlueprint
+from API.Routes.ScriptRoutes.UserRoutes import UserBlueprint
 
 class Blueprint(object):
     @staticmethod
@@ -12,4 +13,5 @@ class Blueprint(object):
         connexionApp.app.register_blueprint(AuthBlueprint,name="AuthBlueprint")
         connexionApp.app.register_blueprint(RoleBlueprint,name="RoleBlueprint")
         connexionApp.app.register_blueprint(UserRoleBlueprint,name="UserRoleBlueprint")
-        connexionApp.app.register_blueprint(ScriptBlueprint,name="ScriptBlueprint")
+        # connexionApp.app.register_blueprint(ScriptBlueprint,name="ScriptBlueprint")
+        connexionApp.app.register_blueprint(UserBlueprint,name="UserBlueprint")

@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: User Script API
+  version: 1.0.0
+
+servers:
+  - url: /scripts/user
+
+paths:
+  /details/{identity}:
+    get:
+      operationId: API.Routes.ScriptRoutes.UserRoutes.GetUserDetails
+      summary: Get User Details
+      description: AD-User - user details endpoints
+      parameters:
+        - name: identity
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: User details retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: string
+        500:
+          description: Server error.
+  /add:
+    post:
+      operationId: API.Routes.ScriptRoutes.UserRoutes.AddNewUser
+      summary: Add a New User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                sam_account_name:
+                  type: string
+                display_name:
+                  type: string
+                initial_password:
+                  type: string
+                email:
+                  type: string
+                ou_path:
+                  type: string
+      responses:
+        200:
+          description: User added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: string
+        500:
+          description: Server error.
