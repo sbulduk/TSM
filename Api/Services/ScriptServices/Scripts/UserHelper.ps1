@@ -13,22 +13,47 @@ class UserHelper {
         $securePassword = ConvertTo-SecureString $this.Password -AsPlainText -Force
         $credential = New-Object System.Management.Automation.PSCredential($this.Username, $securePassword)
         
-        $session = New-PSSession -ComputerName $this.Server -Credential $credential
-        return $session
+        try {
+            $session = New-PSSession -ComputerName $this.Server -Credential $credential
+            return $session
+        }
+        catch {
+            Write-Error "Error creating remote session: $_"
+            return $null
+        }
     }
 
-    [PSObject] GetUserDetails([string]$identity) {
+    # [PSObject] GetUserDetails([string]$identity) {
+    #     $session = $this.CreateRemoteSession()
+    #     $result = Invoke-Command -Session $session -ScriptBlock {
+    #         param($identity)
+    #         try {
+    #             Get-ADUser -Identity $identity | Select-Object *
+    #         } catch {
+    #             return $null
+    #         }
+    #     } -ArgumentList $identity
+    #     Remove-PSSession -Session $session
+    #     return $result # Convert result to json
+    # }
+
+    [string] GetUserDetails([string]$identity) {
         $session = $this.CreateRemoteSession()
-        $result = Invoke-Command -Session $session -ScriptBlock {
-            param($identity)
-            try {
-                Get-ADUser -Identity $identity | Select-Object *
-            } catch {
-                return $null
-            }
-        } -ArgumentList $identity
-        Remove-PSSession -Session $session
-        return $result
+        if($session){
+            $result = Invoke-Command -Session $session -ScriptBlock {
+                param($identity)
+                try {
+                    (Get-ADUser -Filter "SamAccountName -like '*$($identity)*'" | Select-Object -First 1 | Select-Object | *) | ConvertTo-Json
+                } catch {
+                    return $null
+                }
+            } -ArgumentList $identity
+            Remove-PSSession -Session $session
+            return $result # Convert result to json
+        }else{
+            Write-Host "Failed to create remote session"
+            return $null
+        }
     }
 
     [bool] CheckUserExists([string]$identity) {

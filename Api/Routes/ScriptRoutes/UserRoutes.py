@@ -2,7 +2,8 @@ from flask import Blueprint,request,jsonify
 from API.Services.ScriptServices.UserService import UserService
 
 UserBlueprint=Blueprint("UserBlueprint",__name__,url_prefix="/scripts/user")
-userService=UserService("http://192.168.2.2:5985/wsman","sbulduk","Sbulduk2024!")
+# userService=UserService("http://192.168.2.2:5985/wsman","sbulduk","Sbulduk2024!")
+userService=UserService("192.168.2.2","sbulduk","Sbulduk2024!")
 
 @UserBlueprint.route("/details/<identity>",methods=["GET"])
 def GetUserDetails(identity):
