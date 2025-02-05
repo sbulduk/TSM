@@ -12,49 +12,29 @@ class UserHelper {
     [System.Management.Automation.Runspaces.PSSession] CreateRemoteSession() {
         $securePassword = ConvertTo-SecureString $this.Password -AsPlainText -Force
         $credential = New-Object System.Management.Automation.PSCredential($this.Username, $securePassword)
-        
-        try {
-            $session = New-PSSession -ComputerName $this.Server -Credential $credential
-            return $session
-        }
-        catch {
-            Write-Error "Error creating remote session: $_"
-            return $null
-        }
-    }
+        $session = New-PSSession -ComputerName $this.Server -Credential $credential
+        return $session
 
-    # [PSObject] GetUserDetails([string]$identity) {
-    #     $session = $this.CreateRemoteSession()
-    #     $result = Invoke-Command -Session $session -ScriptBlock {
-    #         param($identity)
-    #         try {
-    #             Get-ADUser -Identity $identity | Select-Object *
-    #         } catch {
-    #             return $null
-    #         }
-    #     } -ArgumentList $identity
-    #     Remove-PSSession -Session $session
-    #     return $result # Convert result to json
-    # }
+    }
 
     [string] GetUserDetails([string]$identity) {
         $session = $this.CreateRemoteSession()
-        if($session){
-            $result = Invoke-Command -Session $session -ScriptBlock {
-                param($identity)
-                try {
-                    (Get-ADUser -Filter "SamAccountName -like '*$($identity)*'" | Select-Object -First 1 | Select-Object | *) | ConvertTo-Json
-                } catch {
-                    return $null
-                }
+        $result = Invoke-Command -Session $session -ScriptBlock {
+            param($id)
+            $user = Get-ADUser -Filter "SamAccountName -like '$id'" -ErrorAction SilentlyContinue |
+                Select-Object DistinguishedName, Enabled, GivenName, Name, ObjectClass, ObjectGUID, SamAccountName, SID, Surname, UserPrincipalName |
+                ConvertTo-Json -Depth 3
+            return $user
             } -ArgumentList $identity
-            Remove-PSSession -Session $session
-            return $result # Convert result to json
-        }else{
-            Write-Host "Failed to create remote session"
-            return $null
+    
+            Remove-PSSession $session
+    
+            if ($result) {
+                return $result
+            } else {
+                return "{}"
+            }
         }
-    }
 
     [bool] CheckUserExists([string]$identity) {
         $session = $this.CreateRemoteSession()

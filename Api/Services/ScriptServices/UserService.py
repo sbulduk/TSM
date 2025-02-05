@@ -9,7 +9,7 @@ class UserService(IScriptService):
         self.className="UserHelper"
 
     def GetUserDetails(self,identity:str):
-        return self.InvokePowerShellMethod(self.scriptPath,self.className,"GetUserDetails",identity)
+        return self.InvokePowerShellMethod(self.scriptPath,self.className,"GetUserDetails",params=[identity])
 
     def EnableUser(self,identity:str):
         return self.InvokePowerShellMethod(self.scriptPath,self.className,"EnableUser",identity)

@@ -1,9 +1,15 @@
 from flask import Blueprint,request,jsonify
+from Middleware.Config import Config
 from API.Services.ScriptServices.UserService import UserService
 
 UserBlueprint=Blueprint("UserBlueprint",__name__,url_prefix="/scripts/user")
+
+config=Config.settings
+remoteIP=config.get("TS.RemoteIP")
+userName=config.get("TS.UserName")
+password=config.get("TS.Password")
+userService=UserService(remoteIP,userName,password)
 # userService=UserService("http://192.168.2.2:5985/wsman","sbulduk","Sbulduk2024!")
-userService=UserService("192.168.2.2","sbulduk","Sbulduk2024!")
 
 @UserBlueprint.route("/details/<identity>",methods=["GET"])
 def GetUserDetails(identity):
